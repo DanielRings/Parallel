@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
 
 		if(rank == 0)
 		{
-			std::cout << "Last Iteration" << std:endl;
+			std::cout << "Last Iteration" << std::endl;
 			for(int r=0; r<nodeRows; r++){
 				for(int c=0; c<N; c++)
 					std::cout<<local[r][c]<<" ";
