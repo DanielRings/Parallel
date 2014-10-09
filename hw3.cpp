@@ -331,12 +331,14 @@ int main(int argc, char *argv[])
 	{
 		double localSum = 0; 
 		double globalSum = 0; 
+		int previousRows = (nodeRank * rowsPerSection);
+		if(nodeRank >= remainder){
+			previousRows += remainder;
+		}
 		for(unsigned int row=0; row<rowsPerSection; row++)
 		{
-			for(unsigned int column=0; column<N; column++)
-			{
-				localSum += localArray[row][column]; 
-			}
+			unsigned int column = previousRows + row;
+			localSum += localArray[row][column];
 		}
 		
 		MPI_Reduce((void*)&localSum, (void*)&globalSum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD); 
