@@ -75,6 +75,26 @@ int main(int argc, char *argv[])
 
 	for(int i=0; i < iterations; i++)
 	{
+		if(size == 1)
+		{
+			for(int row = 1; row < nodeRows-1; row++)
+			{
+				temp[row][0] = (local[row-1][N-1]+local[row-1][0]+local[row-1][1]+
+							local[row][N-1]+local[row][0]+local[row][1]+
+							local[row+1][N-1]+local[row+1][0]+local[row+1][1])/9; 
+
+				for(int column = 1; column < N-1; column++)
+				{	
+					temp[row][column] = (local[row-1][column-1]+local[row-1][column]+local[row-1][column+1]+
+								local[row][column-1]+local[row][column]+local[row][column+1]+
+								local[row+1][column-1]+local[row+1][column]+local[row+1][column+1])/9; 
+				}	
+				
+				temp[row][N-1] = (local[row-1][N-2]+local[row-1][N-1]+local[row-1][0]+
+							local[row][N-2]+local[row][N-1]+local[row][0]+
+							local[row+1][N-2]+local[row+1][N-1]+local[row+1][0])/9; 
+			}
+		}
 		if(size > 1)
 		{
 			if(rank == 0) // First set of rows
@@ -98,7 +118,7 @@ int main(int argc, char *argv[])
 					temp[row][N-1] = (local[row-1][N-2]+local[row-1][N-1]+local[row-1][0]+
 								local[row][N-2]+local[row][N-1]+local[row][0]+
 								local[row+1][N-2]+local[row+1][N-1]+local[row+1][0])/9; 
-				}	
+				}
 
 				for(int row = 1; row < nodeRows-2; row++)
 				{
@@ -145,7 +165,7 @@ int main(int argc, char *argv[])
 								local[row][N-2]+local[row][N-1]+local[row][0]+
 								local[row+1][N-2]+local[row+1][N-1]+local[row+1][0])/9; 
 
-				}	
+				}
 
 				for(int row = 2; row < nodeRows-1; row++)
 				{
@@ -154,18 +174,18 @@ int main(int argc, char *argv[])
 
 				MPI_Wait(requestUp, MPI_STATUS_IGNORE);
 
-				temp[0][0] = 		(upperSwapRow[N-1]+upperSwapRow[0]+upperSwapRow[1]+
+				temp[0][0] = (upperSwapRow[N-1]+upperSwapRow[0]+upperSwapRow[1]+
 								local[0][N-1]+local[0][0]+local[0][1]+
-								local[1][N-1]+local[1][0]+local[1][1])/9; 
+								local[1][N-1]+local[1][0]+local[1][1])/9;
 				for(int column =1; column < N-1; column++)
 				{
 					temp[0][column] = (upperSwapRow[column-1]+upperSwapRow[column]+upperSwapRow[column+1]+
 							                     local[0][column-1]+local[0][column]+local[0][column+1]+
-							                     local[1][column-1]+local[1][column]+local[1][column+1])/9; 
+							                     local[1][column-1]+local[1][column]+local[1][column+1])/9;
 				}
-				temp[0][N-1] =		(upperSwapRow[N-2]+upperSwapRow[N-1]+upperSwapRow[0]+     
+				temp[0][N-1] = (upperSwapRow[N-2]+upperSwapRow[N-1]+upperSwapRow[0]+     
 						                local[0][N-2]+local[0][N-1]+local[0][0]+
-						                local[1][N-2]+local[1][N-1]+local[1][0])/9; 
+						                local[1][N-2]+local[1][N-1]+local[1][0])/9;
 
 				memcpy((void*)local[0], temp[0], sizeof(double)*N);
 				memcpy((void*)local[1], temp[1], sizeof(double)*N);
@@ -238,7 +258,6 @@ int main(int argc, char *argv[])
 				memcpy((void*)local[nodeRows-1], temp[nodeRows-1], sizeof(double)*N);
 			}
 		}
-
 	}
 
 
@@ -274,7 +293,23 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		// Fill in lonely case
+		int globalSum = 0;
+		for(int row = 0; row < nodeRows; row++)
+		{
+			globalSum += local[row][row];
+		}
+		std::cout << "Last Iteration, rank: " << rank << std::endl;
+		for(int r=0; r<nodeRows; r++){
+			for(int c=0; c<N; c++)
+				std::cout<<local[r][c]<<" ";
+			std::cout<<std::endl;
+		}
+
+		if(rank == 0)
+		{
+			std::cout<<std::endl<<std::endl;
+			std::cout << "\tGlobal Sum: " << globalSum;
+		}
 	}
 	
 	MPI_Barrier(MPI_COMM_WORLD);
@@ -286,6 +321,5 @@ int main(int argc, char *argv[])
 	}
 
 	MPI_Finalize();    
-    	return 0; 
+    	return 0;
 }
-    
