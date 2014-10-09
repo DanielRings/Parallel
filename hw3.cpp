@@ -293,6 +293,24 @@ int main(int argc, char *argv[])
 			std::cout << "\tGlobal Sum: " << globalSum;
 		}
 	}
+	else if(size == 1)
+	{
+		double globalSum = 0;
+		for(int row = 0; row < nodeRows; row++)
+		{
+			globalSum += local[row][row];
+		}
+
+		std::cout << "Last Iteration, rank: " << rank << std::endl;
+		for(int r=0; r<nodeRows; r++){
+			for(int c=0; c<N; c++)
+				std::cout<<local[r][c]<<" ";
+			std::cout<<std::endl;
+		}
+
+		std::cout<<std::endl<<std::endl;
+		std::cout << "\tGlobal Sum: " << globalSum;
+	}
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	double endTime = MPI_Wtime();
