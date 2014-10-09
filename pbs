@@ -3,7 +3,7 @@
 #PBS -A eecs587f14_flux
 #PBS -l qos=flux
 #PBS -q flux
-#PBS -l nodes=1,walltime=00:00:01
+#PBS -l nodes=2,walltime=00:00:01
 #PBS -o o.txt
 #PBS -e e.txt
 module load gcc/4.8.0

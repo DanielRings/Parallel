@@ -1,0 +1,1 @@
+	Global Sum: 2485.95	Time: 8.25357
