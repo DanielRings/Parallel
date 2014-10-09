@@ -279,17 +279,8 @@ int main(int argc, char *argv[])
 		
 		MPI_Reduce((void*)&localSum, (void*)&globalSum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-		std::cout << "Last Iteration, rank: " << rank << std::endl;
-		for(int r=0; r<nodeRows; r++){
-			for(int c=0; c<N; c++)
-				std::cout<<local[r][c]<<" ";
-			std::cout<<std::endl;
-		}
-
 		if(rank == 0)
 		{
-			std::cout<<std::endl<<std::endl;
-			std::cout << "Local Sum: " << localSum;
 			std::cout << "\tGlobal Sum: " << globalSum;
 		}
 	}
@@ -300,15 +291,6 @@ int main(int argc, char *argv[])
 		{
 			globalSum += local[row][row];
 		}
-
-		std::cout << "Last Iteration, rank: " << rank << std::endl;
-		for(int r=0; r<nodeRows; r++){
-			for(int c=0; c<N; c++)
-				std::cout<<local[r][c]<<" ";
-			std::cout<<std::endl;
-		}
-
-		std::cout<<std::endl<<std::endl;
 		std::cout << "\tGlobal Sum: " << globalSum;
 	}
 	
