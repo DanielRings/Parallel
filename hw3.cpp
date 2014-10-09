@@ -24,9 +24,6 @@ int main(int argc, char *argv[])
     N = atoi(argv[1]);
 	iterations = atoi(argv[2]);
 
-	if(rank == 0)
-		std::cout<<"size = "<<size<<"\tN = "<<N<<"\titerations = "<<iterations<<std::endl;
-
 	int nodeRows = N / size;
 	int rem = N % size;
 	if(rank < rem)
@@ -93,6 +90,11 @@ int main(int argc, char *argv[])
 				temp[row][N-1] = (local[row-1][N-2]+local[row-1][N-1]+local[row-1][0]+
 							local[row][N-2]+local[row][N-1]+local[row][0]+
 							local[row+1][N-2]+local[row+1][N-1]+local[row+1][0])/9; 
+			}
+
+			for(int row = 1; row < nodeRows-2; row++)
+			{
+				memcpy((void*)local[row], (void*)temp[row], sizeof(double)*N);
 			}
 		}
 		if(size > 1)
@@ -288,26 +290,6 @@ int main(int argc, char *argv[])
 		{
 			std::cout<<std::endl<<std::endl;
 			std::cout << "Local Sum: " << localSum;
-			std::cout << "\tGlobal Sum: " << globalSum;
-		}
-	}
-	else
-	{
-		int globalSum = 0;
-		for(int row = 0; row < nodeRows; row++)
-		{
-			globalSum += local[row][row];
-		}
-		std::cout << "Last Iteration, rank: " << rank << std::endl;
-		for(int r=0; r<nodeRows; r++){
-			for(int c=0; c<N; c++)
-				std::cout<<local[r][c]<<" ";
-			std::cout<<std::endl;
-		}
-
-		if(rank == 0)
-		{
-			std::cout<<std::endl<<std::endl;
 			std::cout << "\tGlobal Sum: " << globalSum;
 		}
 	}
