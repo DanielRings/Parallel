@@ -75,17 +75,6 @@ int main(int argc, char *argv[])
 
 	for(int i=0; i < iterations; i++)
 	{
-		if(rank == 0)
-		{	
-			std::cout <<"Node: "<<rank<<"\tMADE IT TO STEP: "<<i<<std::endl;
-			for(int r=0; r<nodeRows; r++){
-				for(int c=0; c<N; c++)
-					std::cout<<local[r][c]<<" ";
-				std::cout<<std::endl;
-			}
-			std::cout<<std::endl<<std::endl;
-		}
-
 		if(size > 1)
 		{
 			if(rank == 0) // First set of rows
@@ -269,14 +258,15 @@ int main(int argc, char *argv[])
 		
 		MPI_Reduce((void*)&localSum, (void*)&globalSum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
+		std::cout << "Last Iteration, rank: " << rank << std::endl;
+		for(int r=0; r<nodeRows; r++){
+			for(int c=0; c<N; c++)
+				std::cout<<local[r][c]<<" ";
+			std::cout<<std::endl;
+		}
+
 		if(rank == 0)
 		{
-			std::cout << "Last Iteration" << std::endl;
-			for(int r=0; r<nodeRows; r++){
-				for(int c=0; c<N; c++)
-					std::cout<<local[r][c]<<" ";
-				std::cout<<std::endl;
-			}
 			std::cout<<std::endl<<std::endl;
 			std::cout << "Local Sum: " << localSum;
 			std::cout << "\tGlobal Sum: " << globalSum;
