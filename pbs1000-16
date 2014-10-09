@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#PBS -A eecs587f14_flux
+#PBS -l qos=flux
+#PBS -q flux
+#PBS -l nodes=16,walltime=00:01:00
+#PBS -o o.txt
+#PBS -e e.txt
+module load gcc/4.8.0
+module load openmpi/1.8.2/gcc/4.8.0
+
+cd /home/drings/Parallel
+(mpirun ./hw3 1000 500) > hw3Out1000-16.txt
