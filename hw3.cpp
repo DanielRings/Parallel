@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 							local[row+1][N-2]+local[row+1][N-1]+local[row+1][0])/9; 
 			}
 
-			for(int row = 1; row < nodeRows-2; row++)
+			for(int row = 1; row < nodeRows-1; row++)
 			{
 				memcpy((void*)local[row], (void*)temp[row], sizeof(double)*N);
 			}
