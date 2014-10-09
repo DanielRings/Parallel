@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
    	int rank, size;
-   	const double PI 3.14159
+   	const double PI = 3.14159;
 	MPI_Init(&argc,&argv);
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&size);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 
 	// initialize
-	for(int row = 0; r < nodeRows; row++)
+	for(int row = 0; row < nodeRows; row++)
 	{
 		for(int column = 0; column < N; column++)
 		{
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 		if(rank == 1)
 		{	
 			std::cout <<"Node: "<<rank<<"\tMADE IT TO STEP: "<<i<<std::endl;
-			for(int r=0; r<rowsPerSection; r++){
+			for(int r=0; r<nodeRows; r++){
 				for(int c=0; c<N; c++)
 					std::cout<<local[r][c]<<" ";
 				std::cout<<std::endl;
@@ -267,7 +267,13 @@ int main(int argc, char *argv[])
 			localSum += local[row][column];
 		}
 		
-		MPI_Reduce((void*)&localSum, (void*)&globalSum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD); 
+		MPI_Reduce((void*)&localSum, (void*)&globalSum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+		if(rank == 1)
+		{
+			std::cout << "Local Sum: " << localSum;
+			std::cout << "\tGlobal Sum: " << globalSum;
+		}
 	}
 	else
 	{
@@ -279,8 +285,6 @@ int main(int argc, char *argv[])
 
 	if(rank == 1)
 	{
-		std::cout << "Local Sum: " << localSum;
-		std::cout << "\tGlobal Sum: " << globalSum;
 		std::cout << "\tTime: " << (endTime-startTime) << std::endl; 
 	}
 
