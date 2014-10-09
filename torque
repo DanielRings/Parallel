@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#PBS -A eecs587f14_flux
+#PBS -l qos=flux
+#PBS -q flux
+#PBS -l nodes=2
+#PBS -l walltime=00:01:00
+#PBS -l o=output.txt
+#PBS -l e=errors.txt
+
+module load gcc/4.8.0
+module load openmpi/1.8.2/gcc/4.8.0
+
+cd /home/bijan/bf-eecs587/HW/3
+pwd
+(mpirun ./hello 20 10) > roughOutput.txt
