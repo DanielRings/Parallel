@@ -1,1 +1,1 @@
-	Global Sum: 2403.91	Time: 5.12358
+	Global Sum: 2483.91	Time: 5.12358
